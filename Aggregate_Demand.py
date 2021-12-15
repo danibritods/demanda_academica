@@ -4,7 +4,8 @@ import json
 import csv
 import re
 import os
-
+log = []
+dicipline_equivalence = {"PRO01121":"MAT01201"}
 
 def Read_Files_in_Folder():
     files = os.listdir()
@@ -28,6 +29,13 @@ def Save_CSV(table,csv_file_name):
             writer.writerow(row)
     print("'"+csv_file_name+"'","sucessfuly written!")
 
+def Correction(target,correction_rules):
+    fixed_target = target
+    for phrase,fixed_phrase in correction_rules.items():
+        print(phrase,fixed_phrase)
+        fixed_target = fixed_target.replace(phrase,fixed_phrase)
+    return fixed_target 
+    
 def Subject_Dict_prerequisites_names(files):
     '''Return a subjects_dict with the subject keys, names and prerequisites'''
     def _Build_prerequisites_names_Dict(matriz_pdf):
@@ -35,7 +43,13 @@ def Subject_Dict_prerequisites_names(files):
         laparams = LAParams(line_overlap=0.5,
         char_margin=500, line_margin=2, word_margin=0.5,
         boxes_flow=0.5, detect_vertical=False, all_texts=False)
-        text = extract_text(matriz_pdf,laparams=laparams)
+        matriz_raw = extract_text(matriz_pdf,laparams=laparams)
+
+        #TODO: should we make a global "correction_rules"?
+        matriz_correction_rules = {"INF01106 BancodeDadosI":"INF01116 BancodeDadosI",
+                "BancodeDadosII INF01106":"BancodeDadosII INF01116"}
+        matriz = Correction(matriz_raw,matriz_correction_rules)
+        log.append(matriz)
 
         #This first expression fixes the side effect of the pdf reader putting prerequisites in new lines
         #substitute the newline for a comma just between prerequisites
@@ -44,11 +58,12 @@ def Subject_Dict_prerequisites_names(files):
             #print(m.group(0)[2:])
             return(","+m.group(0)[2:])
 
-        fixed_prerequisites=re.sub(exp,repl,text)
+        fixed_prerequisites=re.sub(exp,repl,matriz)
         
         exp2 = r"[A-Z]{3}\d{5}.*[A-Z]{3}\d{5}"
-        subjects_prerequisites = re.findall(exp2,fixed_prerequisites,re.M) 
-        subjects_prerequisites
+        subjects_prerequisites = re.findall(exp2,fixed_prerequisites,re.M)
+        log.append(subjects_prerequisites) 
+        #print("!!!!!!!",subjects_prerequisites,"!!!!!!!")
 
         #~improove this repetition of .split()~
         #prerequisites = {x.split()[0]:x.split()[-1] for x in subjects_prerequisites}
@@ -60,9 +75,10 @@ def Subject_Dict_prerequisites_names(files):
         print("'subjects_dict.json' sucssesfully built and loaded.")
         return subject_dict 
 
-    dict = Read_JSON_to_Dict("subjects_dict.json")
+    #dict = Read_JSON_to_Dict("subjects_dict.json")
+    dict = -1
     if dict == -1:
-        matriz_pdf = [pdf for pdf in files if "Matriz" in pdf][0]
+        matriz_pdf = [pdf for pdf in files if "Matriz" in pdf][-1]
         if matriz_pdf == []:
             #return "Error! Neither 'subjects_dict.json' nor MatrizCurricular were not found."
             return -1
@@ -88,7 +104,9 @@ def Aggregate_Demand(extratos,prerequisites):
             char_margin=95.0, line_margin=2, word_margin=0.5,
             boxes_flow=0.5, detect_vertical=False, all_texts=False)
         #Reading pdf to string
-        extract = extract_text(student_extract_pdf,laparams=laparams)
+        extract_raw = extract_text(student_extract_pdf,laparams=laparams)
+        extract = Correction(extract_raw,dicipline_equivalence)
+
 
         #Filter from "extrato" all the lines begining with a subject key
         attended_subjects = re.findall(r"[A-Z]{3}\d{5}.*",extract) #print(attended_subjects)
@@ -140,8 +158,4 @@ def main():
         extratos = Extratos(files)
         aggregate_demand = Aggregate_Demand(extratos,subject_dict["prerequisites"])
         Final_Demand(aggregate_demand,subject_dict)
-
 main()
-
-    
-
