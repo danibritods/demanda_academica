@@ -5,7 +5,7 @@ import csv
 import re
 import os
 log = []
-dicipline_equivalence = {"PRO01121":"MAT01201"}
+
 
 def Read_Files_in_Folder():
     files = os.listdir()
@@ -29,10 +29,14 @@ def Save_CSV(table,csv_file_name):
             writer.writerow(row)
     print("'"+csv_file_name+"'","sucessfuly written!")
 
+
+
+#dicipline_equivalence = {"PRO01121":"MAT01201"}
+dicipline_equivalence = Read_JSON_to_Dict("dicipline_equivalences.json")
+
 def Correction(target,correction_rules):
     fixed_target = target
     for phrase,fixed_phrase in correction_rules.items():
-        print(phrase,fixed_phrase)
         fixed_target = fixed_target.replace(phrase,fixed_phrase)
     return fixed_target 
     
@@ -63,7 +67,6 @@ def Subject_Dict_prerequisites_names(files):
         exp2 = r"[A-Z]{3}\d{5}.*[A-Z]{3}\d{5}"
         subjects_prerequisites = re.findall(exp2,fixed_prerequisites,re.M)
         log.append(subjects_prerequisites) 
-        #print("!!!!!!!",subjects_prerequisites,"!!!!!!!")
 
         #~improove this repetition of .split()~
         #prerequisites = {x.split()[0]:x.split()[-1] for x in subjects_prerequisites}
@@ -75,8 +78,7 @@ def Subject_Dict_prerequisites_names(files):
         print("'subjects_dict.json' sucssesfully built and loaded.")
         return subject_dict 
 
-    #dict = Read_JSON_to_Dict("subjects_dict.json")
-    dict = -1
+    dict = Read_JSON_to_Dict("subjects_dict.json")
     if dict == -1:
         matriz_pdf = [pdf for pdf in files if "Matriz" in pdf][-1]
         if matriz_pdf == []:
@@ -89,8 +91,9 @@ def Subject_Dict_prerequisites_names(files):
         print("'subjects_dict.json' sucssesfully loaded.")
         return dict 
 
-def Extratos(files):     
-    files = os.listdir()
+def Extratos(files):
+    '''Return a list of all the students extracts in the folder.
+        Determined by not being the "MatrizCurricular.pdf" '''
     pdfs = [file for file in files if file[-3:] == "pdf"]
     #extratos = ["extrato_escolar.pdf","Ext_-_JVFD.pdf","extrato_ze.pdf"]
     extratos = [pdf for pdf in pdfs if "Matriz" not in pdf]
