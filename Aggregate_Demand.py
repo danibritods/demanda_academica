@@ -28,13 +28,14 @@ def Save_CSV(table,csv_file_name):
         for row in table:
             writer.writerow(row)
     print("'"+csv_file_name+"'","sucessfuly written!")
-
-
+#-------------------------------------------------
 
 #dicipline_equivalence = {"PRO01121":"MAT01201"}
 dicipline_equivalence = Read_JSON_to_Dict("dicipline_equivalences.json")
 
+#------------------------------------------------
 def Correction(target,correction_rules):
+    '''Replaces the target substrings in the text according to the correction_rules'''
     fixed_target = target
     for phrase,fixed_phrase in correction_rules.items():
         fixed_target = fixed_target.replace(phrase,fixed_phrase)
@@ -100,8 +101,10 @@ def Extratos(files):
     return extratos 
 
 def Aggregate_Demand(extratos,prerequisites):
+    '''Reads each students extract to find the completed subjects and their subsequent demands'''
+    #TODO improove this commet
     def _Approved_Subjects(student_extract_pdf):
-        '''Return approved subject keys from the academic extract'''
+        '''Return approved subject keys from the student's academic extract'''
         #Ideal layout parameters:
         laparams = LAParams(line_overlap=0.5,
             char_margin=95.0, line_margin=2, word_margin=0.5,
@@ -118,7 +121,7 @@ def Aggregate_Demand(extratos,prerequisites):
         return approved_subjects 
 
     def _Subjects_Demand(prerequisites,approved_subjects):
-        '''Finds the subjects the student have the possibility to attend.
+        '''Finds subjects the student have the possibility to attend.
         That is, unnatended subjects that the student already has the prerequisites'''
         def Is_sublist(sublist,list):
             return set(sublist) <= set(list)
@@ -143,6 +146,7 @@ def Aggregate_Demand(extratos,prerequisites):
     return aggregate_demand
 
 def Final_Demand(aggregate_demand,subject_dict):
+    '''Consolidates the aggregate_demand into a structured result.'''
     final_demand = [["Sigla","Diciplina","Demanda"]]
     print(final_demand[-1])
     for subject,demand in aggregate_demand.items():
