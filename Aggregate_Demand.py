@@ -52,7 +52,9 @@ def Subject_Dict_prerequisites_names(files):
 
         #TODO: should we make a global "correction_rules"?
         matriz_correction_rules = {"INF01106 BancodeDadosI":"INF01116 BancodeDadosI",
-                "BancodeDadosII INF01106":"BancodeDadosII INF01116"}
+                "BancodeDadosII INF01106":"BancodeDadosII INF01116",
+                "INF01203 4 68\nINF01210 ParadigmaOOparaDesenvolvimentodeSoft-":
+                "INF01210 ParadigmaOOparaDesenvolvimentodeSoftware INF01203 4 68"}
         matriz = Correction(matriz_raw,matriz_correction_rules)
         log.append(matriz)
 
@@ -64,15 +66,18 @@ def Subject_Dict_prerequisites_names(files):
             return(","+m.group(0)[2:])
 
         fixed_prerequisites=re.sub(exp,repl,matriz)
-        
-        exp2 = r"[A-Z]{3}\d{5}.*[A-Z]{3}\d{5}"
-        subjects_prerequisites = re.findall(exp2,fixed_prerequisites,re.M)
-        log.append(subjects_prerequisites) 
+        log.append(fixed_prerequisites)
 
-        #~improove this repetition of .split()~
-        #prerequisites = {x.split()[0]:x.split()[-1] for x in subjects_prerequisites}
-        prerequisites = {x[0]:x[-1].split(",") for x in [y.split() for y in subjects_prerequisites]}
-        subject_names = {x[0]:x[-2] for x in [y.split() for y in subjects_prerequisites]}
+        #Regex to filter the lines starting with a subject key
+        exp2 = r"[A-Z]{3}\d{5}.*"
+        subjects_info = re.findall(exp2,fixed_prerequisites,re.M)
+
+        subjects_info_cleaned = [re.sub(r" \d "," , ",s).split()[:3] for s in subjects_info]
+        
+        log.append(subjects_info_cleaned) 
+
+        prerequisites = {x[0]:[] if x[2] == "," else x[2].split(",") for x in subjects_info_cleaned}
+        subject_names = {x[0]:x[1] for x in subjects_info_cleaned}
         subject_dict = {"names":subject_names,"prerequisites":prerequisites}
 
         Save_Dict_to_JSON(subject_dict,"../Config/subjects_dict.json")
