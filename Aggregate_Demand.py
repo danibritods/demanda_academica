@@ -5,7 +5,7 @@ import csv
 import re
 import os
 log = []
-
+path = "."
 
 def Read_Files_in_Folder():
     files = os.listdir()
@@ -31,7 +31,7 @@ def Save_CSV(table,csv_file_name):
 #-------------------------------------------------
 
 #dicipline_equivalence = {"PRO01121":"MAT01201"}
-dicipline_equivalence = Read_JSON_to_Dict("../Config/dicipline_equivalences.json")
+dicipline_equivalence = Read_JSON_to_Dict(path+"/Config/dicipline_equivalences.json")
 
 #------------------------------------------------
 def Correction(target,correction_rules):
@@ -80,34 +80,28 @@ def Subject_Dict_prerequisites_names(files):
         subject_names = {x[0]:x[1] for x in subjects_info_cleaned}
         subject_dict = {"names":subject_names,"prerequisites":prerequisites}
 
-        Save_Dict_to_JSON(subject_dict,"../Config/subjects_dict.json")
+        Save_Dict_to_JSON(subject_dict,path+"/Config/subjects_dict.json")
         print("'subjects_dict.json' sucssesfully built and loaded.")
         return subject_dict 
 
-    dict = Read_JSON_to_Dict("../Config/subjects_dict.json")
+    dict = Read_JSON_to_Dict(path+"/Config/subjects_dict.json")
     if dict == -1:
         #TODO: improve the safety with a try catch 
-        matriz_pdf = os.listdir("../Matriz_Curricular")[-1]
+        matriz_pdf = os.listdir(path+"/Matriz_Curricular")[-1]
         if matriz_pdf == []:
             #return "Error! Neither 'subjects_dict.json' nor MatrizCurricular were not found."
             return -1
         else:
             print("'subjects_dict.json' not found. Lets build it!")
-            return _Build_prerequisites_names_Dict("../Matriz_Curricular/"+matriz_pdf)
+            return _Build_prerequisites_names_Dict(path+"/Matriz_Curricular/"+matriz_pdf)
     else:
         print("'subjects_dict.json' sucssesfully loaded.")
         return dict 
 
-#def Extratos(files):
-#    '''Return a list of all the students extracts in the folder.
-#        Determined by not being the "MatrizCurricular.pdf" '''
-#    pdfs = [file for file in files if file[-3:] == "pdf"]
-#    #extratos = ["extrato_escolar.pdf","Ext_-_JVFD.pdf","extrato_ze.pdf"]
-#    extratos = [pdf for pdf in pdfs if "Matriz" not in pdf]
-#    return extratos 
 def Extratos():
     '''Return the filenames of students extract inside the folder "Extratos_Academicos"'''
-    return ["../Extratos_Academicos/"+extrato for extrato in os.listdir("../Extratos_Academicos")]
+    # TODO: Should I make a function to deal with full paths? 
+    return [path+"/Extratos_Academicos/"+extrato for extrato in os.listdir(path+"/Extratos_Academicos") if extrato[-3:]=="pdf"]
 
 def Aggregate_Demand(extratos,prerequisites):
     '''Reads each students extract to find the completed subjects and their subsequent demands'''
@@ -165,7 +159,7 @@ def Final_Demand(aggregate_demand,subject_dict):
         except KeyError:
             log.append(subject)
         
-    Save_CSV(final_demand,"../Results/RESULTS_aggregate_demand.csv")
+    Save_CSV(final_demand,path+"/Results/RESULTS_aggregate_demand.csv")
 
 def main():
     files = Read_Files_in_Folder()
