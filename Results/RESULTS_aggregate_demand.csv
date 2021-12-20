@@ -1,8 +1,13 @@
 Sigla,Diciplina,Demanda
+LEL04102,InglêsInstrumentalI,1
+MAT01105,CálculoDiferencialeIntegralIII,1
+MAT01106,MétodoMatemático,1
+FIS01103,FísicaGeralII,2
 FIS01109,LaboratóriodeFísicaGeralII,4
 INF01204,SistemaOperacional,1
 INF01201,AnáliseeProjetodeSistemas,4
 MAT01107,ProcessosEstocásticos,3
+INF01115,RedesdeComputadores,3
 INF01116,BancodeDadosI,4
 INF01117,LinguagensFormaiseTeoriadaComputação,4
 LES04514,MetodologiadoTrabalhoCientíﬁco,4
@@ -24,8 +29,3 @@ LEL04202,PortuguêsInstrumentalII,4
 LEL04101,PortuguêsInstrumentalI,4
 LEL04506,InglêsInstrumentalIII,4
 LEL04507,InglêsInstrumentalIV,4
-LEL04102,InglêsInstrumentalI,1
-FIS01103,FísicaGeralII,2
-INF01115,RedesdeComputadores,3
-MAT01105,CálculoDiferencialeIntegralIII,1
-MAT01106,MétodoMatemático,1
