@@ -158,10 +158,12 @@ def Final_Demand(aggregate_demand,subject_dict):
     '''Consolidates the aggregate_demand into a structured result.'''
     final_demand = [["Sigla","Diciplina","Demanda"]]
     print(final_demand[-1])
-    for subject,demand in aggregate_demand.items():
-        final_demand.append([subject,subject_dict["names"][subject],demand])
-        print(final_demand[-1])
-    
+    for subject,name in subject_dict["names"].items():
+        try:
+            final_demand.append([subject,name,aggregate_demand[subject]])
+            print(final_demand[-1])
+        except KeyError:
+            log.append(subject)
         
     Save_CSV(final_demand,"../Results/RESULTS_aggregate_demand.csv")
 
