@@ -54,7 +54,7 @@ def Subject_Dict_prerequisites_names(files):
         matriz_correction_rules = {"INF01106 BancodeDadosI":"INF01116 BancodeDadosI",
                 "BancodeDadosII INF01106":"BancodeDadosII INF01116",
                 "INF01203 4 68\nINF01210 ParadigmaOOparaDesenvolvimentodeSoft-":
-                "INF01210 ParadigmaOOparaDesenvolvimentodeSoftware INF01203 4 68"}
+                "INF01210 ParadigmaOOparaDesenvolvimentodeSoftware INF01203,INF01119 4 68"}
         matriz = Correction(matriz_raw,matriz_correction_rules)
         log.append(matriz)
 
@@ -120,7 +120,7 @@ def Aggregate_Demand(extratos,prerequisites):
         #Filter from "extrato" all the lines begining with a subject key
         attended_subjects = re.findall(r"[A-Z]{3}\d{5}.*",extract) #print(attended_subjects)
         #Filter the approved subjects and the subjects exempt through the special pandemic period (AAREs) 
-        approved_subjects = [att_sub.split(" ",1)[0] for att_sub in attended_subjects if ("APR" in att_sub or len(att_sub) == 12)]
+        approved_subjects = [att_sub.split(" ",1)[0] for att_sub in attended_subjects if ("APR" in att_sub or len(att_sub) <= 15)]
         return approved_subjects 
 
     def _Subjects_Demand(prerequisites,approved_subjects):
