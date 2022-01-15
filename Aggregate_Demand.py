@@ -5,7 +5,7 @@ import csv
 import re
 import os
 log = []
-dicipline_equivalence = {"PRO01121":"MAT01201"}
+path = "."
 
 def Read_Files_in_Folder():
     files = os.listdir()
@@ -28,11 +28,16 @@ def Save_CSV(table,csv_file_name):
         for row in table:
             writer.writerow(row)
     print("'"+csv_file_name+"'","sucessfuly written!")
+#-------------------------------------------------
 
+#dicipline_equivalence = {"PRO01121":"MAT01201"}
+dicipline_equivalence = Read_JSON_to_Dict(path+"/Config/dicipline_equivalences.json")
+
+#------------------------------------------------
 def Correction(target,correction_rules):
+    '''Replaces the target substrings in the text according to the correction_rules'''
     fixed_target = target
     for phrase,fixed_phrase in correction_rules.items():
-        print(phrase,fixed_phrase)
         fixed_target = fixed_target.replace(phrase,fixed_phrase)
     return fixed_target 
     
@@ -47,7 +52,9 @@ def Subject_Dict_prerequisites_names(files):
 
         #TODO: should we make a global "correction_rules"?
         matriz_correction_rules = {"INF01106 BancodeDadosI":"INF01116 BancodeDadosI",
-                "BancodeDadosII INF01106":"BancodeDadosII INF01116"}
+                "BancodeDadosII INF01106":"BancodeDadosII INF01116",
+                "INF01203 4 68\nINF01210 ParadigmaOOparaDesenvolvimentodeSoft-":
+                "INF01210 ParadigmaOOparaDesenvolvimentodeSoftware INF01203,INF01119 4 68"}
         matriz = Correction(matriz_raw,matriz_correction_rules)
         log.append(matriz)
 
@@ -59,46 +66,48 @@ def Subject_Dict_prerequisites_names(files):
             return(","+m.group(0)[2:])
 
         fixed_prerequisites=re.sub(exp,repl,matriz)
-        
-        exp2 = r"[A-Z]{3}\d{5}.*[A-Z]{3}\d{5}"
-        subjects_prerequisites = re.findall(exp2,fixed_prerequisites,re.M)
-        log.append(subjects_prerequisites) 
-        #print("!!!!!!!",subjects_prerequisites,"!!!!!!!")
+        log.append(fixed_prerequisites)
 
-        #~improove this repetition of .split()~
-        #prerequisites = {x.split()[0]:x.split()[-1] for x in subjects_prerequisites}
-        prerequisites = {x[0]:x[-1].split(",") for x in [y.split() for y in subjects_prerequisites]}
-        subject_names = {x[0]:x[-2] for x in [y.split() for y in subjects_prerequisites]}
+        #Regex to filter the lines starting with a subject key
+        exp2 = r"[A-Z]{3}\d{5}.*"
+        subjects_info = re.findall(exp2,fixed_prerequisites,re.M)
+
+        subjects_info_cleaned = [re.sub(r" \d "," , ",s).split()[:3] for s in subjects_info]
+        
+        log.append(subjects_info_cleaned) 
+
+        prerequisites = {x[0]:[] if x[2] == "," else x[2].split(",") for x in subjects_info_cleaned}
+        subject_names = {x[0]:x[1] for x in subjects_info_cleaned}
         subject_dict = {"names":subject_names,"prerequisites":prerequisites}
 
-        Save_Dict_to_JSON(subject_dict,"subjects_dict.json")
+        Save_Dict_to_JSON(subject_dict,path+"/Config/subjects_dict.json")
         print("'subjects_dict.json' sucssesfully built and loaded.")
         return subject_dict 
 
-    #dict = Read_JSON_to_Dict("subjects_dict.json")
-    dict = -1
+    dict = Read_JSON_to_Dict(path+"/Config/subjects_dict.json")
     if dict == -1:
-        matriz_pdf = [pdf for pdf in files if "Matriz" in pdf][-1]
+        #TODO: improve the safety with a try catch 
+        matriz_pdf = os.listdir(path+"/Matriz_Curricular")[-1]
         if matriz_pdf == []:
             #return "Error! Neither 'subjects_dict.json' nor MatrizCurricular were not found."
             return -1
         else:
             print("'subjects_dict.json' not found. Lets build it!")
-            return _Build_prerequisites_names_Dict(matriz_pdf)
+            return _Build_prerequisites_names_Dict(path+"/Matriz_Curricular/"+matriz_pdf)
     else:
         print("'subjects_dict.json' sucssesfully loaded.")
         return dict 
 
-def Extratos(files):     
-    files = os.listdir()
-    pdfs = [file for file in files if file[-3:] == "pdf"]
-    #extratos = ["extrato_escolar.pdf","Ext_-_JVFD.pdf","extrato_ze.pdf"]
-    extratos = [pdf for pdf in pdfs if "Matriz" not in pdf]
-    return extratos 
+def Extratos():
+    '''Return the filenames of students extract inside the folder "Extratos_Academicos"'''
+    # TODO: Should I make a function to deal with full paths? 
+    return [path+"/Extratos_Academicos/"+extrato for extrato in os.listdir(path+"/Extratos_Academicos") if extrato[-3:]=="pdf"]
 
 def Aggregate_Demand(extratos,prerequisites):
+    '''Reads each students extract to find the completed subjects and their subsequent demands'''
+    #TODO improove this commet
     def _Approved_Subjects(student_extract_pdf):
-        '''Return approved subject keys from the academic extract'''
+        '''Return approved subject keys from the student's academic extract'''
         #Ideal layout parameters:
         laparams = LAParams(line_overlap=0.5,
             char_margin=95.0, line_margin=2, word_margin=0.5,
@@ -111,11 +120,11 @@ def Aggregate_Demand(extratos,prerequisites):
         #Filter from "extrato" all the lines begining with a subject key
         attended_subjects = re.findall(r"[A-Z]{3}\d{5}.*",extract) #print(attended_subjects)
         #Filter the approved subjects and the subjects exempt through the special pandemic period (AAREs) 
-        approved_subjects = [att_sub.split(" ",1)[0] for att_sub in attended_subjects if ("APR" in att_sub or len(att_sub) == 12)]
+        approved_subjects = [att_sub.split(" ",1)[0] for att_sub in attended_subjects if ("APR" in att_sub or len(att_sub) <= 15)]
         return approved_subjects 
 
     def _Subjects_Demand(prerequisites,approved_subjects):
-        '''Finds the subjects the student have the possibility to attend.
+        '''Finds subjects the student have the possibility to attend.
         That is, unnatended subjects that the student already has the prerequisites'''
         def Is_sublist(sublist,list):
             return set(sublist) <= set(list)
@@ -140,14 +149,17 @@ def Aggregate_Demand(extratos,prerequisites):
     return aggregate_demand
 
 def Final_Demand(aggregate_demand,subject_dict):
+    '''Consolidates the aggregate_demand into a structured result.'''
     final_demand = [["Sigla","Diciplina","Demanda"]]
     print(final_demand[-1])
-    for subject,demand in aggregate_demand.items():
-        final_demand.append([subject,subject_dict["names"][subject],demand])
-        print(final_demand[-1])
-    
+    for subject,name in subject_dict["names"].items():
+        try:
+            final_demand.append([subject,name,aggregate_demand[subject]])
+            print(final_demand[-1])
+        except KeyError:
+            log.append(subject)
         
-    Save_CSV(final_demand,"RESULTS_aggregate_demand.csv")
+    Save_CSV(final_demand,path+"/Results/RESULTS_aggregate_demand.csv")
 
 def main():
     files = Read_Files_in_Folder()
@@ -155,7 +167,7 @@ def main():
     if subject_dict == -1:
         return "Error! Neither 'subjects_dict.json' nor MatrizCurricular were found in the current folder:\n"+os.getcwd()
     else:
-        extratos = Extratos(files)
+        extratos = Extratos()
         aggregate_demand = Aggregate_Demand(extratos,subject_dict["prerequisites"])
         Final_Demand(aggregate_demand,subject_dict)
 main()
