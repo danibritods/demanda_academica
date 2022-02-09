@@ -7,3 +7,6 @@
 /extrato_escolar.pdf
 /extrato_ze.pdf
 /teste.ipynb
+/__pycache__
+/.pytest_cache
+/Dev
