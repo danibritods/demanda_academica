@@ -25,3 +25,12 @@ The idea is to automatically extract information from pdfs about attendance and 
 The project is specially relevant in the context of our exception period during the pandemics which brings a layer of complexity to the academic system consider demand. 
 
 Finally this is hopefully a small first step towards a data driven culture that is more precise and confortable to the faculty and staff. 
+
+# Next steps
+[] Refactor functions in a separate module
+[] Implement tests
+[] Separate eletives from mandatory 
+[] Put more information on the results filename
+[] Substitute json for csv in config for legibility? 
+[] Make an executable 
+[] Add spaces to the discipline names
