@@ -28,9 +28,15 @@ Finally this is hopefully a small first step towards a data driven culture that 
 
 # Next steps
 [] Refactor functions in a separate module
+
 [] Implement tests
+
 [] Separate eletives from mandatory 
+
 [] Put more information on the results filename
+
 [] Substitute json for csv in config for legibility? 
+
 [] Make an executable 
+
 [] Add spaces to the discipline names
