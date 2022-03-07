@@ -27,7 +27,7 @@ The project is specially relevant in the context of our exception period during 
 Finally this is hopefully a small first step towards a data driven culture that is more precise and confortable to the faculty and staff. 
 
 # Next steps
-- [ ] Cleary define and document dependencies
+- [ ] Clearly define and document dependencies
 - [ ] Refactor functions in a separate module
 - [ ] Implement tests
 - [ ] Separate eletives from mandatory 
