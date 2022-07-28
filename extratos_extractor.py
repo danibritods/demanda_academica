@@ -13,4 +13,4 @@ def PDF_to_string(doc_path):
 if __name__ == '__main__':
     # with open("temp",'w') as writer:
     #     writer.writelines(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
-    print(PDFx("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
+    print(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
