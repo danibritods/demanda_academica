@@ -1,17 +1,16 @@
 """
 Library to extract data from a student's extract. 
 """
-from pdfminer.high_level import extract_text
-from pdfminer.layout import LAParams
+from pyxpdf import Document
+from pyxpdf.xpdf import TextOutput, TextControl, page_iterator
 
-def PDF_to_string(student_extract_pdf_path):
-    #Ideal layout parameters:
-    laparams = LAParams(line_overlap=0.5,
-        char_margin=95.0, line_margin=2, word_margin=0.5,
-        boxes_flow=0.5, detect_vertical=False, all_texts=False)
-    return extract_text(student_extract_pdf_path,laparams=laparams)   
+def PDF_to_string(doc_path):
+    doc = Document(doc_path)
+    control = TextControl(mode = "table")
+    text_out = TextOutput(doc, control)
+    return "\n".join(page_iterator(text_out))
 
 if __name__ == '__main__':
     # with open("temp",'w') as writer:
     #     writer.writelines(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
-    print(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf")[0])
+    print(PDFx("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
