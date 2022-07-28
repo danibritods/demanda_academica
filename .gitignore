@@ -7,3 +7,6 @@
 /extrato_escolar.pdf
 /extrato_ze.pdf
 /teste.ipynb
+__pycache__/extratos_extractor.cpython-39.pyc
+__pycache__/test_extratos_extractor.cpython-39-pytest-7.1.2.pyc
+__pycache__/test_test.cpython-39-pytest-7.1.2.pyc

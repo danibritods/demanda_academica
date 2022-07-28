@@ -1,5 +1,4 @@
-from pdfminer.high_level import extract_text
-from pdfminer.layout import LAParams
+import extratos_extractor
 import json
 import csv
 import re
@@ -106,15 +105,10 @@ def Extratos():
 def Aggregate_Demand(extratos,prerequisites):
     '''Reads each students extract to find the completed subjects and their subsequent demands'''
     #TODO improove this commet
-    def _Approved_Subjects(student_extract_pdf):
+    def _Approved_Subjects(student_extract_pdf_path):
         '''Return approved subject keys from the student's academic extract'''
-        #Ideal layout parameters:
-        laparams = LAParams(line_overlap=0.5,
-            char_margin=95.0, line_margin=2, word_margin=0.5,
-            boxes_flow=0.5, detect_vertical=False, all_texts=False)
-        #Reading pdf to string
-        extract_raw = extract_text(student_extract_pdf,laparams=laparams)
-        extract = Correction(extract_raw,dicipline_equivalence)
+        raw_extract = extratos_extractor.PDF_to_string(student_extract_pdf_path)
+        extract = Correction(raw_extract,dicipline_equivalence)
 
 
         #Filter from "extrato" all the lines begining with a subject key
