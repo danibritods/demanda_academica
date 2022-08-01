@@ -48,3 +48,17 @@ def test_Taken_subjects():
   'workload': '68',
   'grade': '9,9',
   'situation': 'CVD'}}, "Fault in the integration of the previous functions"
+
+def test_Approved_subjects():
+    assert extratos_extractor.Approved_subjects(
+      {'INF01112': {'name': 'Arquitetura de Computadores',
+        'credit': '-',
+        'workload': '68',
+        'grade': '9,9',
+        'situation': 'CVD'}, 
+      'INF01101': {'name': 'Introdução à Ciência da Computação',
+        'credit': '2',
+        'workload': '034(034-000-000)',
+        'grade': '9,5',
+        'situation': 'APR'}}
+    ) == ["INF01112","INF01101"], "Approved subjects"

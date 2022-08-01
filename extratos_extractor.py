@@ -28,6 +28,11 @@ def Taken_subjects(subjects):
     taken_subjects = {subject[:8]:Subjects_to_dict(subject) for subject in subjects}
     return taken_subjects
 
+def Approved_subjects(taken_subjects):
+    return [subject for subject in taken_subjects.keys() if 
+        (taken_subjects[subject]["situation"] in ["APR","CVD"])]
+
+
 if __name__ == '__main__':
     # with open("temp",'w') as writer:
     #     writer.writelines(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
