@@ -62,3 +62,13 @@ def test_Approved_subjects():
         'grade': '9,5',
         'situation': 'APR'}}
     ) == ["INF01112","INF01101"], "Approved subjects"
+
+def test_Demanded_disciplines():
+    course_subjects = {"INF01201":{"name":"Análise e Projeto De Sistemas","prerequisites":["INF01101","INF01209"]},
+                      "INF01204":{ "name":"Sistema Operacional"          ,"prerequisites":["INF01112"]},
+                      "LEL04102":{ "name":"Inglês Instrumental I"        ,"prerequisites":[]},
+                      "INF01207":{ "name":"Estruturas Discretas"         ,"prerequisites":["MAT01104"]}}
+    approved_subjects = ["INF01112","INF01101"]
+    expected_demand = ["INF01204","LEL04102"]
+    #Here I could separate in cases (asserts), for incomplete prerequisites, no prerequisites, none prerequisite
+    assert extratos_extractor.Demanded_subjects(approved_subjects,course_subjects) == expected_demand

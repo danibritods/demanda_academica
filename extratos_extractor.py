@@ -32,6 +32,10 @@ def Approved_subjects(taken_subjects):
     return [subject for subject in taken_subjects.keys() if 
         (taken_subjects[subject]["situation"] in ["APR","CVD"])]
 
+def Demanded_subjects(approved_subjects,course_subjects):
+    return [subject for subject in course_subjects if 
+            (subject not in approved_subjects 
+            and set(course_subjects[subject]['prerequisites']).issubset(set(approved_subjects)))]
 
 if __name__ == '__main__':
     # with open("temp",'w') as writer:
