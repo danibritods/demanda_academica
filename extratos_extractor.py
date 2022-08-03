@@ -58,10 +58,3 @@ def Student_info(report):
 
     return student_info
 
-if __name__ == '__main__':
-    # with open("temp",'w') as writer:
-    #     writer.writelines(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
-    print(
-            Taken_subjects(
-                    (List_subjects(
-                            PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf")))))
