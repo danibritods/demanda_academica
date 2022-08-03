@@ -37,6 +37,27 @@ def Demanded_subjects(approved_subjects,course_subjects):
             (subject not in approved_subjects 
             and set(course_subjects[subject]['prerequisites']).issubset(set(approved_subjects)))]
 
+def Student_info(report):
+    exp = r":\s*((?:[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.;()-]+[\s]{0,1}[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.()-]*[\s]{0,1}(?:;\\n\\n){0,1})*)"
+    data = re.findall(exp,report)
+
+    indices_of_interest = [0,1,2,3,4,5,6,7,9] + [-6,-5,-4] + [11,12,13]
+    clean_data = [data[i].split('\n')[0].strip() for i in indices_of_interest]
+    enem_data = re.findall(r"\d{3},\d{2}",data[8])
+
+    columns = ['name','id','situation', 'center', 'course', 
+                'entry_form','quota','year_semester','enrollment_date',
+                'credits', 'workload', 'CR']
+    student_info = dict(zip(columns,clean_data[:12]))
+
+    enem_subjects = ['essay','lang','math','natural_sci','human_sci','course']
+    student_info['enem_grade'] = dict(zip(enem_subjects,enem_data))
+
+    high_school_col = ['name','city','conclusion_year']
+    student_info['high_school'] = dict(zip(high_school_col,clean_data[12:]))
+
+    return student_info
+
 if __name__ == '__main__':
     # with open("temp",'w') as writer:
     #     writer.writelines(PDF_to_string("Extratos_Academicos/extrato_escolar_Daniel_Brito.pdf"))
