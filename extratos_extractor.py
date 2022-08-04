@@ -11,33 +11,37 @@ def PDF_to_string(doc_path): #should I name more specifically? Extrato_text(extr
     text_out = TextOutput(doc, control)
     return "\n".join(page_iterator(text_out))
 
-def List_subjects(report):
+def Find_subjects_rows(report):
     exp = r"[A-Z]{3}\d{5}.*"
-    subjects = re.findall(exp,report,re.M)
-    return subjects
+    subjects_raw = re.findall(exp,report,re.M)
+    return subjects_raw
     
-def Subjects_to_dict(subjects_raw):
-    name = subjects_raw[8:100].strip()
-    data = subjects_raw[100:].strip().split()
+def Subject_to_dict(subject_row):
+    name = subject_row[8:100].strip()
+    data = subject_row[100:].strip().split()
     if len(data) == 2:
-        return {"name":name,"credit":"-","workload":data[1],"grade":data[0],"situation":"CVD"}
+        subject_dict = {"name":name,"credit":"-","workload":data[1],"grade":data[0],"situation":"CVD"}
     else:
-        return {"name":name,"credit":data[0],"workload":data[1]+data[2],"grade":data[3],"situation":data[4]}
+        subject_dict = {"name":name,"credit":data[0],"workload":data[1]+data[2],"grade":data[3],"situation":data[4]}
+    return subject_dict 
 
-def Taken_subjects(subjects):
-    taken_subjects = {subject[:8]:Subjects_to_dict(subject) for subject in subjects}
-    return taken_subjects
+def Dict_taken_subjects(subject_rows):
+    taken_subjects_dict = {subject[:8]:Subject_to_dict(subject) for subject in subject_rows}
+    return taken_subjects_dict
 
-def Approved_subjects(taken_subjects):
-    return [subject for subject in taken_subjects.keys() if 
+def List_approved_subjects(taken_subjects):
+    approved_subjects = [subject for subject in taken_subjects.keys() if 
         (taken_subjects[subject]["situation"] in ["APR","CVD"])]
+    return approved_subjects
 
-def Demanded_subjects(approved_subjects,course_subjects):
-    return [subject for subject in course_subjects if 
+def List_demanded_subjects(approved_subjects,course_subjects):
+    demanded_subjects = [subject for subject in course_subjects if 
             (subject not in approved_subjects 
             and set(course_subjects[subject]['prerequisites']).issubset(set(approved_subjects)))]
+    return demanded_subjects 
 
-def Student_info(report):
+def Student_personal_info(report):
+    #todo: break, atomise 
     exp = r":\s*((?:[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.;()-]+[\s]{0,1}[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.()-]*[\s]{0,1}(?:;\\n\\n){0,1})*)"
     data = re.findall(exp,report)
 
@@ -57,4 +61,3 @@ def Student_info(report):
     student_info['high_school'] = dict(zip(high_school_col,clean_data[12:]))
 
     return student_info
-
