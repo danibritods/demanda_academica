@@ -3,6 +3,7 @@ Library to find, read and write files
 """
 import json, csv
 from os import listdir, getcwd
+from datetime import datetime
 
 def Read_JSON_to_Dict(json_file):
     try:
@@ -32,4 +33,14 @@ def Save_CSV(table,csv_file_name):
         for row in table:
             writer.writerow(row)
     logging.info("'"+csv_file_name+"'","sucessfuly written!")
+
+def Today():
+    return datetime.today().strftime('%Y-%m-%d')
+    
+def Save_demand_csv(demand,course_subjects):
+    header = [('Sigla','Nome','Demanda (aluno)')]
+    demand_table = [(subject_id, course_subjects[subject_id]['name'], subject_demand) for subject_id, subject_demand in demand]
+    filename = f'demanda_disciplinas_{Today()}.csv'
+
+    Save_CSV(demand_table.insert(0,header),filename)
 
