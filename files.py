@@ -1,7 +1,7 @@
 """
 Library to find, read and write files
 """
-import json
+import json, csv
 from os import listdir, getcwd
 
 def Read_JSON_to_Dict(json_file):
@@ -25,3 +25,11 @@ def Get_current_working_directory():
 def Fetch_reports_filenames():
     reports_names = Fetch_filenames('Extratos_Academicos')
     return reports_names
+
+def Save_CSV(table,csv_file_name):
+    with open(csv_file_name,'w') as csvfile:
+        writer = csv.writer(csvfile) 
+        for row in table:
+            writer.writerow(row)
+    logging.info("'"+csv_file_name+"'","sucessfuly written!")
+
