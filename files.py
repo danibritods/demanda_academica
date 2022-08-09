@@ -2,6 +2,8 @@
 Library to find, read and write files
 """
 import json
+from os import listdir, getcwd
+import json
 
 def Read_JSON_to_Dict(json_file):
     try:
@@ -15,3 +17,12 @@ def Read_course_subjects():
     course_subjects_new_format = {k:{'prerequisites':v} for k,v in course_subjects['prerequisites'].items()}
     return course_subjects_new_format
 
+def Fetch_filenames(dir):
+    return listdir(dir)
+
+def Get_current_working_directory():
+    return getcwd
+
+def Fetch_reports_filenames():
+    reports_names = Fetch_filenames('Extratos_Academicos')
+    return reports_names
