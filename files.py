@@ -3,7 +3,6 @@ Library to find, read and write files
 """
 import json
 from os import listdir, getcwd
-import json
 
 def Read_JSON_to_Dict(json_file):
     try:
