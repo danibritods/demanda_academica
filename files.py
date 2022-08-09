@@ -13,7 +13,7 @@ def Read_JSON_to_Dict(json_file):
 
 def Read_course_subjects():
     course_subjects = Read_JSON_to_Dict('Config/subjects_dict.json')
-    course_subjects_new_format = {k:{'prerequisites':v} for k,v in course_subjects['prerequisites'].items()}
+    course_subjects_new_format = {k:{'prerequisites':v,'name':course_subjects['names'][k]} for k,v in course_subjects['prerequisites'].items()}
     return course_subjects_new_format
 
 def Fetch_filenames(dir):
