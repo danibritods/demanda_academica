@@ -44,7 +44,7 @@ def List_demanded_subjects(approved_subjects,course_subjects):
 def Student_subjects(report,course_subjects):
     taken_subjects = Dict_taken_subjects(Find_subjects_rows(report))
     approved_subjects = List_approved_subjects(taken_subjects)
-    demanded_subjects = (approved_subjects,course_subjects)
+    demanded_subjects = List_demanded_subjects(approved_subjects,course_subjects)
     return {"taken":taken_subjects,"approved":approved_subjects,"demanded":demanded_subjects}
 
 def Student_personal_info(report):
