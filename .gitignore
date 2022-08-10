@@ -11,3 +11,4 @@
 /.pytest_cache
 /Dev
 tests/__pycache__/
+academ/__pycache__/

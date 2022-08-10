@@ -14,7 +14,7 @@ def Read_JSON_to_Dict(json_file):
         return -1  
 
 def Read_course_subjects():
-    course_subjects = Read_JSON_to_Dict('Config/subjects_dict.json')
+    course_subjects = Read_JSON_to_Dict('/config/subjects_dict.json')
     course_subjects_new_format = {k:{'prerequisites':v,'name':course_subjects['names'][k]} for k,v in course_subjects['prerequisites'].items()}
     return course_subjects_new_format
 
@@ -25,7 +25,7 @@ def Get_current_working_directory():
     return getcwd
 
 def Fetch_reports_filenames():
-    reports_names = Fetch_filenames('Extratos_Academicos')
+    reports_names = Fetch_filenames('extratos_academicos')
     return reports_names
 
 def Save_CSV(table,csv_file_name):
