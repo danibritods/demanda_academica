@@ -17,6 +17,7 @@ def Find_subject_demand():
 
 def main():
     demand_table = Find_subject_demand()
+    present.Present_demand_table(demand_table)
     files.Save_demand_csv(demand_table)
 
 if __name__ == '__main__':

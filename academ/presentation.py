@@ -7,3 +7,7 @@ def Subjects_demand_to_table(subjects_demand, course_subjects):
                     for subject_id, subject_demand in subjects_demand]
 
     return header + demand_table
+
+def Present_demand_table(demand_table):
+    for row in demand_table:
+        print(*row)
