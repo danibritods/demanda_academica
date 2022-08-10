@@ -14,7 +14,7 @@ def Read_JSON_to_Dict(json_file):
         return -1  
 
 def Read_course_subjects():
-    course_subjects = Read_JSON_to_Dict('/config/subjects_dict.json')
+    course_subjects = Read_JSON_to_Dict('config/subjects_dict.json')
     course_subjects_new_format = {k:{'prerequisites':v,'name':course_subjects['names'][k]} for k,v in course_subjects['prerequisites'].items()}
     return course_subjects_new_format
 
@@ -39,7 +39,7 @@ def Today():
     return datetime.today().strftime('%Y-%m-%d')
     
 def Save_demand_csv(demand_table):
-    filename = f'demanda_disciplinas_{Today()}.csv'
+    filename = f'results/demanda_disciplinas_{Today()}.csv'
     Save_CSV(demand_table,filename)
 
 if __name__ == '__main__':
