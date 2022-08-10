@@ -10,7 +10,7 @@ def Find_subject_demand():
                                   for filename in files.Fetch_reports_filenames()]
     subject_demand_count = ea.Count_subjects_demand(students_demanded_subjects)
 
-    demand_table = present.Subjects_demand_to_table(subject_demand_count)
+    demand_table = present.Subjects_demand_to_table(subject_demand_count,course_subjects)
 
     return demand_table
 
@@ -18,7 +18,6 @@ def Find_subject_demand():
 def main():
     demand_table = Find_subject_demand()
     files.Save_demand_csv(demand_table)
-
 
 if __name__ == '__main__':
     main()
