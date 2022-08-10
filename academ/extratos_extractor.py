@@ -32,6 +32,8 @@ def Dict_taken_subjects(subject_rows):
 def List_approved_subjects(taken_subjects):
     approved_subjects = [subject for subject in taken_subjects.keys() if 
         (taken_subjects[subject]["situation"] in ["APR","CVD"])]
+        #or equivalences[subject]... intersection(equivalences.keys(),approved_subjects) add equival disciplines into approved
+        #csv for | id | equivalencias|
     return approved_subjects
 
 def List_demanded_subjects(approved_subjects,course_subjects):
