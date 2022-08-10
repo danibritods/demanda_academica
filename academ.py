@@ -10,7 +10,7 @@ def Find_subject_demand():
                                   for filename in files.Fetch_reports_filenames()]
     subject_demand_count = ea.Count_subjects_demand(students_demanded_subjects)
 
-    demand_table = present.Subjects_demand_to_table(subject_demand_count,course_subjects)
+    demand_table = present.Subjects_demand_to_table(subject_demand_count)
 
     return demand_table
 
