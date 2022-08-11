@@ -42,12 +42,12 @@ def Fetch_reports_filenames():
     return reports_names
 
 
-def Save_CSV(table, csv_file_name):
-    with open(csv_file_name, 'w') as csvfile:
+def Save_CSV(table, csv_filename):
+    with open(csv_filename, 'w') as csvfile:
         writer = csv.writer(csvfile)
         for row in table:
             writer.writerow(row)
-    logging.info("'"+csv_file_name+"'", "sucessfuly written!")
+    logging.info("'"+csv_filename+"'", "sucessfuly written!")
 
 
 def Today():
