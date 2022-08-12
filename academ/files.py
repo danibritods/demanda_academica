@@ -23,7 +23,7 @@ def Shape_old_course_subject(course_subjects):
     return shaped
 
 
-def Read_course_subjects():
+def Read_old_course_subjects():
     course_subjects = Read_JSON_to_Dict('config/subjects_dict.json')
     course_subjects_shaped = Shape_old_course_subject(course_subjects)
     return course_subjects_shaped
@@ -59,5 +59,18 @@ def Save_demand_csv(demand_table):
     Save_CSV(demand_table, filename)
 
 
+def Read_csv(filename):
+    with open(filename, mode='r') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=';')
+        return tuple(csv_reader)
+def _treat_prerequisite_read(prerequisite_str):
+    return [] if prerequisite_str == '' else prerequisite_str.replace(' ', '').split(',')
+
+def Format_read_course_subjects(course_subject_tuple):
+    return {subject_id: {'name': name, 'prerequisites': _treat_prerequisite_read(prerequisites)}
+            for subject_id, name, prerequisites in course_subject_tuple[1:]}
+def Get_course_subjects():
+    return Format_read_course_subjects(
+        Read_csv('config/disciplinas_do_curso.csv'))
 if __name__ == '__main__':
     pass

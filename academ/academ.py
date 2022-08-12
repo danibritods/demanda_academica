@@ -5,7 +5,7 @@ import presentation as present
 
 
 def Find_subject_demand():
-    course_subjects = files.Read_course_subjects()
+    course_subjects = files.Get_course_subjects()
     students_demanded_subjects = [ee.Student_subjects(ee.PDF_to_string(f'extratos_academicos/{filename}'), course_subjects)['demanded']
                                   for filename in files.Fetch_reports_filenames()]
     subject_demand_count = ea.Count_subjects_demand(students_demanded_subjects)
