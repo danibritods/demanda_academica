@@ -29,10 +29,13 @@ def Dict_taken_subjects(subject_rows):
     taken_subjects_dict = {subject[:8]:Subject_to_dict(subject) for subject in subject_rows}
     return taken_subjects_dict
 
-def List_approved_subjects(taken_subjects):
-    approved_subjects = [subject for subject in taken_subjects.keys() if 
-        (taken_subjects[subject]["situation"] in ["APR","CVD"])]
-    return approved_subjects
+def List_approved_subjects(taken_subjects,subjects_equivalences={}):
+    approved_subjects = {subject for subject in taken_subjects.keys() if 
+        (taken_subjects[subject]["situation"] in ["APR","CVD"])}
+    subjects_with_equivalences = set.intersection(set(approved_subjects),set(subjects_equivalences.keys()))
+    equivalent_subjects = {subjects_equivalences['subject'] for subject in subjects_with_equivalences}
+
+    return set.union(approved_subjects,equivalent_subjects)
 
 def List_demanded_subjects(approved_subjects,course_subjects):
     demanded_subjects = [subject for subject in course_subjects if 

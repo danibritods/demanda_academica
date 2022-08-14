@@ -61,7 +61,7 @@ def test_List_approved_subjects():
         'workload': '034(034-000-000)',
         'grade': '9,5',
         'situation': 'APR'}}
-    ) == ["INF01112","INF01101"], "Approved subjects"
+    ) == {"INF01112","INF01101"}, "Approved subjects"
 
 def test_List_demanded_disciplines():
     course_subjects = {"INF01201":{"name":"Análise e Projeto De Sistemas","prerequisites":["INF01101","INF01209"]},
