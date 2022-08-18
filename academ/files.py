@@ -95,7 +95,11 @@ def Save_course_subjects(course_subjects):
     fieldnames = ('Sigla','Nome','Prerequisitos')
     Write_csv_dict('config/disciplinas_do_curso.csv',course_subjects_dictable,fieldnames)
 
-
+def Get_subjects_equivalences():
+    filename = 'config/disciplinas_equivalentes.csv'
+    subjects_equivalences = Read_csv(filename)
+    # subjects_equivalences = 
+    return subjects_equivalences
 
 
 

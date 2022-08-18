@@ -44,16 +44,16 @@ def List_demanded_subjects(approved_subjects,course_subjects):
     return demanded_subjects 
 
 
-def Student_subjects(report,course_subjects):
+def Student_subjects(report,course_subjects,subjects_equivalences={}):
     taken_subjects = Dict_taken_subjects(Find_subjects_rows(report))
-    approved_subjects = List_approved_subjects(taken_subjects)
+    approved_subjects = List_approved_subjects(taken_subjects,subjects_equivalences)
     demanded_subjects = List_demanded_subjects(approved_subjects,course_subjects)
     return {"taken":taken_subjects,"approved":approved_subjects,"demanded":demanded_subjects}
 
 def Student_personal_info(report):
     #todo: break, atomise 
     exp = r":\s*((?:[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.;()-]+[\s]{0,1}[A-Za-z0-9\/ÃÂÁâáãÊÉéêíÍóÓôÔúÚûÛçÇ,.()-]*[\s]{0,1}(?:;\\n\\n){0,1})*)"
-    data = re.findall(exp,report)
+    data = re.findall(exp, report)
 
     indices_of_interest = [0,1,2,3,4,5,6,7,9] + [-6,-5,-4] + [11,12,13]
     clean_data = [data[i].split('\n')[0].strip() for i in indices_of_interest]
