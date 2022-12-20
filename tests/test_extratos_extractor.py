@@ -6,26 +6,26 @@ def test_PDF_to_string():
         "extratos_academicos/extrato_escolar_Daniel_Brito.pdf")[6140:9831] == STUDENT_REPORT_EXTRACT, "Incorrect text extration from pyxpdf or incorrect test document"
 
 def test_Find_subjects_rows():
-    assert ee.Find_subjects_rows(STUDENT_REPORT_EXTRACT) == ['MAT01105    Cálculo Diferencial e Integral III                                                              4  068 (068-000-000)  ---       TCNL',
+    assert ee.fetch_rows_with_subject_info(STUDENT_REPORT_EXTRACT) == ['MAT01105    Cálculo Diferencial e Integral III                                                              4  068 (068-000-000)  ---       TCNL',
  'MAT01106    Métodos Matemáticos                                                                             4  068 (068-000-000)  ---       TCNL',
  'FIS01103     Física Geral II                                                                                                    9,0        68',
  'INF01112     Arquitetura de Computadores                                                                                        9,9        68'], "Regular expression not listing subjects correctly"
 
 def test_Subject_to_dict():
-  assert ee.Subject_to_dict('PRO01121     Introdução à Probabilidade e Estatística                                                                           9,3        68') ==  {'name': 'Introdução à Probabilidade e Estatística',
+  assert ee.subject_to_dict('PRO01121     Introdução à Probabilidade e Estatística                                                                           9,3        68') ==  {'name': 'Introdução à Probabilidade e Estatística',
   'credit': '-',
   'workload': '68',
   'grade': '9,3',
   'situation': 'CVD'}, "Incorrect format of subject lectured during COVID special period"
   
-  assert ee.Subject_to_dict('INF01101      Introdução à Ciência da Computação                                                                2  034 (034-000-000)  9,5       APR') == {'name': 'Introdução à Ciência da Computação',
+  assert ee.subject_to_dict('INF01101      Introdução à Ciência da Computação                                                                2  034 (034-000-000)  9,5       APR') == {'name': 'Introdução à Ciência da Computação',
   'credit': '2',
   'workload': '034(034-000-000)',
   'grade': '9,5',
   'situation': 'APR'}, "Incorrect format of a normal period subject"
 
 def test_Dict_taken_subjects():
-    assert ee.Dict_taken_subjects(['MAT01105    Cálculo Diferencial e Integral III                                                              4  068 (068-000-000)  ---       TCNL',
+    assert ee.build_taken_subjects_dict(['MAT01105    Cálculo Diferencial e Integral III                                                              4  068 (068-000-000)  ---       TCNL',
  'MAT01106    Métodos Matemáticos                                                                             4  068 (068-000-000)  ---       TCNL',
  'FIS01103     Física Geral II                                                                                                    9,0        68',
  'INF01112     Arquitetura de Computadores                                                                                        9,9        68']) == {'MAT01105': {'name': 'Cálculo Diferencial e Integral III',
@@ -50,7 +50,7 @@ def test_Dict_taken_subjects():
   'situation': 'CVD'}}, "Fault in the integration of the previous functions"
 
 def test_List_approved_subjects():
-    assert ee.List_approved_subjects(
+    assert ee.list_approved_subjects(
       {'INF01112': {'name': 'Arquitetura de Computadores',
         'credit': '-',
         'workload': '68',
@@ -71,7 +71,7 @@ def test_List_demanded_disciplines():
     approved_subjects = ["INF01112","INF01101"]
     expected_demand = ["INF01204","LEL04102"]
     #Here I could separate in cases (asserts), for incomplete prerequisites, no prerequisites, none prerequisite
-    assert ee.List_demanded_subjects(approved_subjects,course_subjects) == expected_demand
+    assert ee.list_demanded_subjects(approved_subjects,course_subjects) == expected_demand
   
 def test_Student_info():
   #assert regex returns the right info (if the regex is compatible with doculement)
