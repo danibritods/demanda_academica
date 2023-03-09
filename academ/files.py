@@ -69,7 +69,7 @@ def save_CSV(table, csv_filename):
         for row in table:
             writer.writerow(row)
             
-    logging.info("'"+csv_filename+"'", "sucessfuly written!")
+    logging.info("Arquivo "+"'"+csv_filename+"'" + " salvo com sucesso!")
 
 def Write_csv_dict(filename,table,fieldnames):
     with open(filename, mode='w') as csv_file:

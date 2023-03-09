@@ -11,3 +11,4 @@ def subjects_demand_to_table(subjects_demand, course_subjects):
 def present_demand_table(demand_table):
     for row in demand_table:
         print(*row)
+    print()

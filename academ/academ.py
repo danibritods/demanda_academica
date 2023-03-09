@@ -3,6 +3,7 @@ import extratos_extractor as ee
 import extratos_aggregate as ea
 import presentation as present
 import database as db
+import logging
 
 def get_subjects_demand(course_subjects, students_subjects):
     students_demanded_subjects = [student_subject['demanded'] for student_subject in students_subjects]
@@ -36,15 +37,23 @@ def get_only_subjects_demand():
 
     return demand_table
 
-
 def main():
-    course_subjects, students_subjects, students_infos = get_all_data()   
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 
+    logging.info("Lendo os dados... \n")
+    course_subjects, students_subjects, students_infos = get_all_data()   
+    logging.info("Construindo tabela de demandas... \n")
     demand_table = get_subjects_demand(course_subjects, students_subjects)
+
+    logging.info("Resultados:\n")
     present.present_demand_table(demand_table)
+    logging.info(f"Salvando os resultados...")
     files.save_demand_csv(demand_table)
 
+    logging.info("Construindo o banco de dados...")
     build_database(course_subjects, students_subjects, students_infos)
+    logging.info("Banco de dados construído com sucesso!")
+    logging.info("Script finalizado.")
 
 if __name__ == '__main__':
     main()
