@@ -1,5 +1,5 @@
 # demanda_academica
-Automatically assess and agregate the demand for each subject in UENF's Computer Science course curriculum. 
+Pipeline to automatically extract students data and demand for disciplines from their transcripts. 
 
 # Use
 1. Put all the students extracts in the folder "Extratos_Academicos". (We provide mine and João's as example)
