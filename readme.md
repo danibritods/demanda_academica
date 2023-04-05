@@ -1,3 +1,5 @@
+# demanda_academica
+Pipeline to automatically extract students data and demand for disciplines from their transcripts. 
 # AcaDem
 Script para determinar a demanda por cada disciplina de determinado curso da UENF a partir dos extratos acadêmicos de seus alunos.
 
