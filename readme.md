@@ -1,21 +1,21 @@
 # AcaDem
-A script to determine the **demand** for each **discipline** of a given course at UENF from the **academic transcripts** of its students.
+A script to determine the **demand** for each **subject** of a given course at UENF from the **academic transcripts** of its students.
 
 # Installation 
-1. O AcaDem requer Pyhon versão 3.9x. Para instalá-lo, siga as instruções oficiais da linguagem
-1. Faça o download dese repositório e acomode a pasta onde desejar 
-1. Execute o comando de instalação:
-   - ``python setup.py``
+1. Install Python 3.9
+2. Clone this repo
+3. Run the setup script: ```python setup.py```
+
 # Usage 
 To use AcaDem, provide the paths to the course syllabus and the student's transcripts in the `config` file. Then, run the script in your terminal. 
+The script will generate a CSV file with the code and number of students that demand each subject, as well as a SQLite database file with all the data extracted and produced. Both located at the `results` folder. 
 
 1. Prepare a folder with students academic transcripts 
 2. Prepare the `disciplinas_do_curso.csv`. A file with the subjects code and their prerequisites following our [example]
-3. Optionally prepare the `disciplinas_equivalentes.csv`. A file establishing the equivalence between disciplines. 
+3. Optionally prepare the `disciplinas_equivalentes.csv`. A file establishing the equivalence between subjects. 
 4. Provide the filepaths for prepared files in the `config.ini` file. 
 5. Run the script in your terminal: ```python academ/academ.py```
 
-The script will generate a CSV file with the code and number of students that demand each discipline, as well as a SQLite database file with all the data extracted and produced. Both located at the `results` folder. 
 
 ## config
 The config file establishes the filepaths of all the files needed for the script. 
@@ -35,23 +35,22 @@ Each dicipline has an ID, in this file we can config equivalences and correction
 
 # Folder Structure
 ```
-├── LICENSE
-├── README.md                        <- Apresentação do programa
+├── README.md                        <- Program overview 
 ├── config.ini                       <- configuration file
-├── academ                           <- Pasta principal 
-│   ├── __init__.py                      <- .
-│   ├── academ.py                        <- Arquivo principal
-│   ├── extratos_aggregate.py            <- Módulo de agregação da demanda
-│   ├── extratos_extractor.py            <- Módulo de extração dos dados 
-│   ├── files.py                         <- Módulo para manipulação de arquivos
-│   └── presentation.py                  <- Módulo para transformação estética dos dados
-├── data                            <- Pasta com os dados (opcional) 
-│   ├── disciplinas_do_curso.csv         <- Grade curricular do curso
-│   ├── disciplinas_equivalentes.csv     <- Tabela de equivalências entre disciplinas
-│   └── extratos_academicos              <- Pasta com os extratos acadêmicos
-├── results                         <- Pasta com os resultados
+├── academ                           <- Main folder
+│   ├── __init__.py                      <- Required Python file
+│   ├── academ.py                        <- Main code
+│   ├── extratos_aggregate.py            <- Data aggregation module
+│   ├── extratos_extractor.py            <- Data extraction module
+│   ├── files.py                         <- File manipulation module
+│   └── presentation.py                  <- Format and styling module
+├── data                            <- Data folder 
+│   ├── disciplinas_do_curso.csv         <- subjects from the course curriculum
+│   ├── disciplinas_equivalentes.csv     <- Table of equivalences between subjects
+│   └── extratos_academicos              <- Folder with the academic transcripts
+├── results                         <- Results folder 
 │   ├── academ.db                        <- SQLite database file
-│   └── demanda_disciplinas_{date}.csv   <- Módulo para transformação estética dos dados
+│   └── demanda_disciplinas_{date}.csv   <- Table with subjects demand
 └── requirements.txt                <- Lista dos pacotes necessários 
 ```
 # About
