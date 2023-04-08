@@ -4,7 +4,8 @@ A script to determine the **demand** for each **subject** of a given course at U
 # Installation 
 1. Install Python 3.9
 2. Clone this repo
-3. Run the setup script: ```python setup.py```
+3. Run the setup script:  
+   - ```python setup.py```
 
 # Usage 
 To use AcaDem, provide the paths to the course syllabus and the student's transcripts in the `config` file. Then, run the script in your terminal. 
@@ -38,20 +39,20 @@ Each dicipline has an ID, in this file we can config equivalences and correction
 ├── README.md                        <- Program overview 
 ├── config.ini                       <- configuration file
 ├── academ                           <- Main folder
-│   ├── __init__.py                      <- Required Python file
+│   ├── __init__.py                      <- Python file 
 │   ├── academ.py                        <- Main code
 │   ├── extratos_aggregate.py            <- Data aggregation module
 │   ├── extratos_extractor.py            <- Data extraction module
 │   ├── files.py                         <- File manipulation module
 │   └── presentation.py                  <- Format and styling module
-├── data                            <- Data folder 
+├── data                             <- Data folder 
 │   ├── disciplinas_do_curso.csv         <- subjects from the course curriculum
 │   ├── disciplinas_equivalentes.csv     <- Table of equivalences between subjects
 │   └── extratos_academicos              <- Folder with the academic transcripts
-├── results                         <- Results folder 
+├── results                          <- Results folder 
 │   ├── academ.db                        <- SQLite database file
 │   └── demanda_disciplinas_{date}.csv   <- Table with subjects demand
-└── requirements.txt                <- Lista dos pacotes necessários 
+└── requirements.txt                 <- List of the required packages  
 ```
 # About
 AcaDem was developed as a first step to generate information that assists coordinators and laboratory heads at Universidade Estadual do Norte Fluminense (UENF) in their decision-making process. As the university's academic system does not offer this possibility, I developed a script that extracts the necessary data from documents that coordinators and heads have access to. I tried to keep libraries at a minimum and used vanilla Python instead of Pandas, for example. It was also an interesting exploration of regular expressions and PDF data extraction.
