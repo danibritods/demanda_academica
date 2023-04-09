@@ -5,38 +5,67 @@ A script to determine the **demand** for each **subject** of a given course at U
 1. Install Python 3.9
 2. Clone this repo
 3. Run the setup script:  
-   - ```python setup.py```
+    ```python setup.py```
 
 # Usage 
 To use AcaDem, provide the paths to the course syllabus and the student's transcripts in the `config` file. Then, run the script in your terminal. 
 The script will generate a CSV file with the code and number of students that demand each subject, as well as a SQLite database file with all the data extracted and produced. Both located at the `results` folder. 
 
 1. Prepare a folder with students academic **transcripts** 
-2. Prepare the `disciplinas_do_curso.csv`. A file with the subjects code and their prerequisites following our [example]
-3. Optionally prepare the `disciplinas_equivalentes.csv`. A file establishing the equivalence between subjects. 
-4. Provide the filepaths for prepared files in the `config.ini` file. 
-5. Run the script in your terminal: ```python academ/academ.py```
+2. Prepare the `disciplinas_do_curso.csv` file. 
+3. Optionally prepare the `disciplinas_equivalentes.csv` file.
+4. Provide the filepaths to the prepared folder and files in the `config.ini` file. 
+5. Run the script in your terminal:   
+    ```python academ/academ.py```
 
 
 ## Config
 The [config file](config.ini) establishes the filepaths of all the files needed for the script:
-![](docs/config_ini.png)
 
-### Folder with students academic transcripts 
-This folder contains all the academic transcripts that will be used for the 
+<p class="codeblock-label">config.ini</p>
 
-### `disciplinas_do_curso.csv`
-Table containing course's each subject, its code, name and pre requisites. This file should follow the this structure. Alternatively the user can provide the course syllabus, 
+```ini
+[paths]
+PastaExtratosAcademicos = ./data/extratos_academicos
+DisciplinasCursoCSV = ./data/disciplinas_do_curso.csv 
+DisciplinasEquivalentes = None
+ResultsFolder = ./results
+```
 
-This file has to be built and the user. Alternatively by providing the course's syllabus the script generates the file. 
 
-### dicipline_equivalences
-Each dicipline has an ID, in this file we can config equivalences and corrections. For example our curriculum stablish MAT01201 as our Introduction to Statistics, but we studied the same subject with the PRO01121 ID. 
+### `PastaExtratosAcademicos`
+Specifies the path to the folder with all the academic transcripts that will be used for the transcript.
+
+### `DisciplinasCursoCSV` 
+Specifies the path to the `disciplinas_do_curso.csv` file. This file is a table that lists each **subject** in the course, along with its **ID**, **name** and **prerequisites**, as the following [example](data/disciplinas_do_curso.csv):
+```csv
+Sigla;Nome;Prerequisitos
+INF01210;Paradigma OO para Desenvolvimentode Software; INF01203,  INF01119 
+INF01211;Pesquisa Operacional;MAT01208
+INF01121;Testede Software;INF01210
+INF01123;Interface Homem-Máquina;INF01205
+LES04536;Computação e Sociedade;
+INF01122;Sistemas Distribuídos;INF01115
+``` 
+The user can either provide this file manually, or use the script to generate it from the course syllabus. However, the script may not produce an accurate table, so it is recommended to check and edit the output if needed. 
+
+
+### `DisciplinasEquivalentes`
+Specifies the path to the `disciplinas_equivalentes.csv` file. This file is a table that indicates which subjects have equivalent IDs. For example, PRO0121 and MAT01201 have the same syllabus, so they are considered equivalent in both directions. This means that if a student takes one of them, they don’t need to take the other. The table shows this relationship by listing each pair of taken -> equivalent subjects in a row:
+```csv
+Disciplina_cursada;Disciplina_equivalente
+PRO01121;MAT01201
+MAT01201;PRO01121
+```
+
+### `ResultsFolder`
+Specifies the path to the folder were to build the results:
+   - `demanda_disciplinas_{date}.csv`: table with the number of students demanding each subject. 
+   - `academ.db`: SQLite database with all the extracted data. 
 
 # Folder Structure
 ```
 ├── README.md                        <- Program overview 
-
 ├── config.ini                       <- Configuration file
 ├── academ                           <- Main folder
 │   ├── __init__.py                      <- Python file 
