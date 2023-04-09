@@ -1,0 +1,49 @@
+Sigla;Nome;Prerequisitos
+MAT01117;Geometria Analíticae Vetores;
+MAT01101;Cálculo Diferenciale Integral I;
+INF01106;Programação I;
+MAT01104;Lógica Matemática;
+INF01105;Organizaçãode Computadores;
+INF01101;IntroduçãoàCiênciada Computação;
+LEL04102;Inglês Instrumental I;
+MAT01203;Cálculo Diferenciale Integral II;MAT01101
+MAT01212;Álgebra Linear;MAT01117
+FIS01202;Física Geral I;MAT01101
+FIS01204;Laboratóriode Física Geral I;
+INF01209;Programação II;INF01106
+INF01207;Estruturas Discretas;MAT01104
+INF01104;Lógica Digital;INF01105
+LEL04206;Inglês Instrumental II;LEL04102
+MAT01105;Cálculo Diferenciale Integral III;MAT01203
+MAT01106;Método Matemático;MAT01203
+FIS01103;Física Geral II;FIS01202
+FIS01109;Laboratóriode Física Geral II;
+INF01114;Estruturade Dados I;INF01209
+INF01113;Paradigmasde Linguagensde Programação;INF01209
+INF01112;Arquiteturade Computadores;INF01104
+MAT01208;Cálculo Numérico; MAT01106,  MAT01212 
+MAT01201;Estatística EProbabilidades;MAT01105
+INF01202;Estruturade Dados II;INF01114
+INF01204;Sistema Operacional;INF01112
+INF01203;Programação Orientadaa Objetos;INF01114
+INF01201;Análisee Projetode Sistemas; INF01101,  INF01209 
+MAT01107;Processos Estocásticos;MAT01201
+INF01115;Redesde Computadores;INF01204
+INF01116;Bancode Dados I;INF01202
+INF01117;Linguagens Formaise Teoriada Computação; INF01207,  INF01113 
+LES04514;Metodologiado Trabalho Cientíﬁco;
+INF01119;Engenhariade Software;INF01201
+INF01124;IntroduçãoàComputação Gráﬁca; MAT01208,  MAT01107,  FIS01103 
+INF01212;Compiladores;INF01117
+INF01206;Bancode Dados II;INF01116
+INF01205;Inteligência Artiﬁcial;INF01202
+INF01210;Paradigma OOpara Desenvolvimentode Software; INF01203,  INF01119 
+INF01211;Pesquisa Operacional;MAT01208
+INF01121;Testede Software;INF01210
+INF01123;Interface Homem-Máquina;INF01205
+LES04536;Computaçãoe Sociedade;
+INF01122;Sistemas Distribuídos;INF01115
+PRO01540;Empreendedorismo;INF01211
+INF01130;Projetode Monograﬁa; PRO01540,  INF01124,  INF01122,  INF01212,  INF01206,  INF01123,  INF01121 
+INF01131;Monograﬁa;INF01130
+INF01127;Estagio Supervisionado;INF01130
