@@ -37,7 +37,7 @@ Each dicipline has an ID, in this file we can config equivalences and correction
 # Folder Structure
 ```
 ├── README.md                        <- Program overview 
-├── config.ini                       <- configuration file
+├── config.ini                       <- Configuration file
 ├── academ                           <- Main folder
 │   ├── __init__.py                      <- Python file 
 │   ├── academ.py                        <- Main code

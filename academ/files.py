@@ -6,17 +6,24 @@ import csv
 import os
 import logging
 from datetime import datetime
+from configparser import ConfigParser
+CONFIG = ConfigParser()
+CONFIG.read("config.ini")
+PATHS = CONFIG["paths"]
 
 def get_course_subjects():
+    disciplinas_do_curso_csv_path = CONFIG.get("paths","DisciplinasCursoCSV")
     return format_read_course_subjects(
-        read_csv('config/disciplinas_do_curso.csv'))
+        read_csv(disciplinas_do_curso_csv_path))
 
 def fetch_reports_filenames():
-    reports_names = fetch_filenames('extratos_academicos')
+    extratos_academicos_folder_path = PATHS.get("PastaExtratosAcademicos")
+    reports_names = fetch_filenames(extratos_academicos_folder_path)
     return reports_names
 
 def save_demand_csv(demand_table):
-    filename = f'results/demanda_disciplinas_{today()}.csv'
+    results_path = PATHS.get("ResultsFolder")
+    filename = f'{results_path}/demanda_disciplinas_{today()}.csv'
     save_CSV(demand_table, filename)
 
 
@@ -33,7 +40,8 @@ def _treat_prerequisite_read(prerequisite_str):
     return [] if prerequisite_str == '' else prerequisite_str.replace(' ', '').split(',')
 
 def fetch_filenames(dir):
-    return os.listdir(dir)
+    filenames = os.listdir(dir)
+    return [f'{dir}/{filename}' for filename in filenames]
 
 def today():
     return datetime.today().strftime('%Y-%m-%d')

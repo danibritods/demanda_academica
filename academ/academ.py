@@ -16,7 +16,7 @@ def get_subjects_demand(course_subjects, students_subjects):
 
 def get_all_data():
     course_subjects = files.get_course_subjects()
-    students_reports = [ee.PDF_to_string(f'extratos_academicos/{filename}')
+    students_reports = [ee.PDF_to_string(f'{filename}')
                                   for filename in files.fetch_reports_filenames()]
     students_subjects = [ee.get_student_subjects(student_report, course_subjects)
                                   for student_report in students_reports]
