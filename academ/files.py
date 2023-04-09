@@ -41,7 +41,7 @@ def _treat_prerequisite_read(prerequisite_str):
 
 def fetch_filenames(dir):
     filenames = os.listdir(dir)
-    return [f'{dir}/{filename}' for filename in filenames]
+    return [os.path.join(dir,filename) for filename in filenames]
 
 def today():
     return datetime.today().strftime('%Y-%m-%d')
