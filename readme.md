@@ -36,6 +36,7 @@ Each dicipline has an ID, in this file we can config equivalences and correction
 # Folder Structure
 ```
 ├── README.md                        <- Program overview 
+
 ├── config.ini                       <- Configuration file
 ├── academ                           <- Main folder
 │   ├── __init__.py                      <- Python file 
@@ -57,4 +58,4 @@ Each dicipline has an ID, in this file we can config equivalences and correction
 AcaDem was developed as a first step to generate information that assists coordinators and laboratory heads at Universidade Estadual do Norte Fluminense (UENF) in their decision-making process. As the university's academic system does not offer this possibility, I developed a script that extracts the necessary data from documents that coordinators and heads have access to. I tried to keep libraries at a minimum and used vanilla Python instead of Pandas, for example. It was also an interesting exploration of regular expressions and PDF data extraction.
 
 # Examples 
-![](docs/running_academ.webm)
+[running_academ.webm](https://user-images.githubusercontent.com/57596639/230776053-be19216a-366c-461e-bffd-22d1f4a2363c.webm)
