@@ -83,6 +83,9 @@ Specifies the path to the folder were to build the results:
 │   └── demanda_disciplinas_{date}.csv   <- Table with subjects demand
 └── requirements.txt                 <- List of the required packages  
 ```
+# Database Entity Relationship Diagram
+![ERD](docs/erd.png)
+
 # About
 AcaDem was developed as a first step to generate information that assists coordinators and laboratory heads at Universidade Estadual do Norte Fluminense (UENF) in their decision-making process. As the university's academic system does not offer this possibility, I developed a script that extracts the necessary data from documents that coordinators and heads have access to. I tried to keep libraries at a minimum and used vanilla Python instead of Pandas, for example. It was also an interesting exploration of regular expressions and PDF data extraction.
 
