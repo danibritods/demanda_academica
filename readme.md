@@ -28,7 +28,7 @@ The [config file](config.ini) establishes the filepaths of all the files needed 
 [paths]
 PastaExtratosAcademicos = ./data/extratos_academicos
 DisciplinasCursoCSV = ./data/disciplinas_do_curso.csv 
-DisciplinasEquivalentes = None
+DisciplinasEquivalentesCSV = ./data/disciplinas_equivalentes.csv
 ResultsFolder = ./results
 ```
 
