@@ -5,7 +5,9 @@ A script to determine the **demand** for each **subject** of a given course at U
 1. Install Python 3.9
 2. Clone this repo
 3. Run the setup script:  
-    ```python setup.py```
+    ```bash
+    python setup.py
+    ```
 
 # Usage 
 To use AcaDem, provide the paths to the course syllabus and the student's transcripts in the `config` file. Then, run the script in your terminal. 
@@ -16,7 +18,9 @@ The script will generate a CSV file with the code and number of students that de
 3. Optionally prepare the `disciplinas_equivalentes.csv` file.
 4. Provide the filepaths to the prepared folder and files in the `config.ini` file. 
 5. Run the script in your terminal:   
-    ```python academ/academ.py```
+    ```bash
+      python academ/academ.py
+    ```
 
 
 ## Config
