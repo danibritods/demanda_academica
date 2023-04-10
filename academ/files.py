@@ -16,10 +16,11 @@ def get_course_subjects():
     return format_read_course_subjects(
         read_csv(disciplinas_do_curso_csv_path))
 
-def fetch_reports_filenames():
-    extratos_academicos_folder_path = PATHS.get("PastaExtratosAcademicos")
-    reports_names = fetch_filenames(extratos_academicos_folder_path)
-    return reports_names
+def fetch_reports_filepaths():
+    reports_folder_path = PATHS.get("PastaExtratosAcademicos")
+    reports_filenames = os.listdir(reports_folder_path)
+    reports_filepaths = [os.path.join(reports_folder_path,filename) for filename in reports_filenames]
+    return reports_filepaths
 
 def save_demand_csv(demand_table):
     results_path = PATHS.get("ResultsFolder")
@@ -38,10 +39,6 @@ def read_csv(filename):
 
 def _treat_prerequisite_read(prerequisite_str):
     return [] if prerequisite_str == '' else prerequisite_str.replace(' ', '').split(',')
-
-def fetch_filenames(dir):
-    filenames = os.listdir(dir)
-    return [os.path.join(dir,filename) for filename in filenames]
 
 def today():
     return datetime.today().strftime('%Y-%m-%d')

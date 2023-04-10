@@ -16,8 +16,8 @@ def get_subjects_demand(course_subjects, students_subjects):
 
 def get_all_data():
     course_subjects = files.get_course_subjects()
-    students_reports = [ee.PDF_to_string(f'{filename}')
-                                  for filename in files.fetch_reports_filenames()]
+    students_reports = [ee.PDF_to_string(f'{filepath}')
+                                  for filepath in files.fetch_reports_filepaths()]
     students_subjects = [ee.get_student_subjects(student_report, course_subjects)
                                   for student_report in students_reports]
     students_infos = [ee.student_personal_data(report) for report in students_reports]
@@ -29,8 +29,8 @@ def build_database(course_subjects, students_subjects, students_infos):
 
 def get_only_subjects_demand():
     course_subjects = files.get_course_subjects()
-    students_demanded_subjects = [ee.get_student_subjects(ee.PDF_to_string(f'extratos_academicos/{filename}'), course_subjects)['demanded']
-                                  for filename in files.fetch_reports_filenames()]
+    students_demanded_subjects = [ee.get_student_subjects(ee.PDF_to_string(filepath, course_subjects))['demanded']
+                                  for filepath in files.fetch_reports_filepaths()]
     subject_demand_count = ea.Count_subjects_demand(students_demanded_subjects)
 
     demand_table = present.subjects_demand_to_table(subject_demand_count,course_subjects)
