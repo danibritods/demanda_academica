@@ -1,7 +1,11 @@
 import sqlite3
+import os
+from files import PATHS
 
 def build(course_subjects, students_subjects, students_infos):
-  con = sqlite3.connect("results/academ.db")
+  database_filename = "academ.db"
+  database_filepath = os.path.join(PATHS.get("ResultsFolder"),database_filename)
+  con = sqlite3.connect(database_filepath)
   cur = con.cursor()
 
   tables_creation_script = """
