@@ -6,7 +6,7 @@ from pyxpdf import Document
 from pyxpdf.xpdf import TextOutput, TextControl, page_iterator
 
 def get_student_subjects(report,course_subjects,subjects_equivalences={}):
-    taken_subjects = build_taken_subjects_dict(fetch_rows_with_subject_info(report))
+    taken_subjects = get_taken_subjects(report)
     approved_subjects = list_approved_subjects(taken_subjects,subjects_equivalences)
     demanded_subjects = list_demanded_subjects(approved_subjects,course_subjects)
     return {"taken":taken_subjects,"approved":approved_subjects,"demanded":demanded_subjects}
@@ -33,10 +33,13 @@ def student_personal_data(report):
 
     return student_data
 
+def get_taken_subjects(report):
+    taken_subjects = build_taken_subjects_dict(fetch_rows_with_subject_info(report))
+    return taken_subjects
+
 def build_taken_subjects_dict(subject_rows):
     taken_subjects_dict = {subject[:8] : subject_to_dict(subject) for subject in subject_rows}
     return taken_subjects_dict
-
 
 def fetch_rows_with_subject_info(report):
     exp = r"[A-Z]{3}\d{5}.*"
