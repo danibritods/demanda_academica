@@ -5,6 +5,11 @@ import presentation as present
 import database as db
 import logging
 
+def get_students_reports():
+    students_reports = [ee.PDF_to_string(f'{filepath}')
+        for filepath in files.fetch_reports_filepaths()]
+    return students_reports 
+
 def get_subjects_demand(course_subjects, students_subjects):
     students_demanded_subjects = [student_subject['demanded'] for student_subject in students_subjects]
 
@@ -16,8 +21,7 @@ def get_subjects_demand(course_subjects, students_subjects):
 
 def get_all_data():
     course_subjects = files.get_course_subjects()
-    students_reports = [ee.PDF_to_string(f'{filepath}')
-                                  for filepath in files.fetch_reports_filepaths()]
+    students_reports = get_students_reports()
     students_subjects = [ee.get_student_subjects(student_report, course_subjects)
                                   for student_report in students_reports]
     students_infos = [ee.student_personal_data(report) for report in students_reports]
