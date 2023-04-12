@@ -158,17 +158,17 @@ def build(course_subjects, students_subjects, students_infos):
                       }
 
   create_tables(con, cur, tables_creation_script)
-  insert_data(con, cur, course_subjects, students_subjects, students_infos, insertion_script)
+  insert_student_data(con, cur, course_subjects, students_subjects, students_infos, insertion_script)
 
 def create_tables(con, cur, tables_creation_script):
   cur.executescript(tables_creation_script)
   con.commit()
 
-def insert_data(con, cur, course_subjects, students_subjects, students_infos, insertion_script):
-  [data_to_db(con, cur, student_subject['taken'], student_info, insertion_script) 
+def insert_student_data(con, cur, students_subjects, students_infos, insertion_script):
+  [student_data_to_db(con, cur, student_subject['taken'], student_info, insertion_script) 
   for student_subject, student_info in zip(students_subjects, students_infos)]    
 
-def data_to_db(con, cur, taken_subjects, student_info, insertion_script):
+def student_data_to_db(con, cur, taken_subjects, student_info, insertion_script):
     insert_db(con, cur, insertion_script["DisciplinasCursadas"],
         format_disciplinas_cursadas(student_info['id'],
             taken_subjects_dict_to_rows(taken_subjects)))
@@ -184,6 +184,8 @@ def data_to_db(con, cur, taken_subjects, student_info, insertion_script):
 
     insert_db(con, cur, insertion_script["NotasEnem"],
       format_notas_enem(student_info))
+
+def insert_subjects_data(con, cur, course)
 
 def insert_db(con, cur,  insertion_script, data):
   cur.executemany(insertion_script,data)
