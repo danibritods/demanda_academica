@@ -12,11 +12,10 @@ def build(course_subjects, students_subjects, students_infos):
   CREATE TABLE IF NOT EXISTS Disciplinas (
     Sigla         varchar(10) NOT NULL, 
     Nome          varchar(10) NOT NULL, 
-    Creditos      integer(10) NOT NULL, 
-    CargaHoraria  integer(10) NOT NULL, 
-    Prerequisitos varchar(10), 
-    PRIMARY KEY (Sigla), 
-    FOREIGN KEY(Prerequisitos) REFERENCES Disciplinas(Sigla));
+    Creditos      integer(10), 
+    CargaHoraria  integer(10),  
+    PRIMARY KEY (Sigla)
+    );
 
   CREATE TABLE IF NOT EXISTS Pre_requisitos (
     Pre_requisitante INTEGER,
@@ -81,24 +80,7 @@ def build(course_subjects, students_subjects, students_infos):
                       Nota, 
                       Situacao) 
                       VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?);
-                      """,
-                "Disciplinas":"""
-                      INSERT OR IGNORE INTO Disciplinas
-                      (Sigla, 
-                      Nome, 
-                      Creditos, 
-                      CargaHoraria, 
-                      --Prerequisitos) 
-                      VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                    --?);
+                      (?, ?, ?, ?);
                       """,
                 "Estudante":"""
                     INSERT OR IGNORE INTO Estudante
@@ -204,7 +186,7 @@ def insert_subjects_data(con, cur, course_subjects):
 
 def insert_subject_tuple(con: sqlite3.Connection, cur: sqlite3.Cursor, subject_tuple: tuple[str,str]) -> None:
     insert_subjects_script = """
-    INSERT OR IGNORE INTO disciplinas
+    INSERT OR IGNORE INTO Disciplinas
     (Sigla, Nome)
     VALUES (?,?);
     """
