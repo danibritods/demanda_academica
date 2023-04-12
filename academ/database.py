@@ -19,7 +19,7 @@ def build(course_subjects, students_subjects, students_infos):
 
   CREATE TABLE IF NOT EXISTS Pre_requisitos (
     Pre_requisitante INTEGER,
-    Pre_requisito INTEGER,
+    Pre_requisito    INTEGER,
     FOREIGN KEY (Pre_requisitante) 
         REFERENCES disciplinas(Sigla),
     FOREIGN KEY (Pre_requisito) 
@@ -31,17 +31,21 @@ def build(course_subjects, students_subjects, students_infos):
     DisciplinasSigla   varchar(10) NOT NULL, 
     Nota               varchar(4) NOT NULL, 
     Situacao           varchar(3) NOT NULL, 
-    PRIMARY KEY (EstudanteMatricula, 
-    DisciplinasSigla), 
-    FOREIGN KEY(EstudanteMatricula) REFERENCES Estudante(Matricula), 
-    FOREIGN KEY(DisciplinasSigla) REFERENCES Disciplinas(Sigla));
+    PRIMARY KEY (
+      EstudanteMatricula, 
+      DisciplinasSigla), 
+    FOREIGN KEY(EstudanteMatricula) 
+      REFERENCES Estudante(Matricula), 
+    FOREIGN KEY(DisciplinasSigla) 
+      REFERENCES Disciplinas(Sigla));
 
   CREATE TABLE IF NOT EXISTS EnsinoMedio (
     EstudanteMatricula integer(10) NOT NULL, 
     Instituicao        varchar(255), 
     Cidade             varchar(255), 
     AnoConclusao       char(4), 
-    FOREIGN KEY(EstudanteMatricula) REFERENCES Estudante(Matricula));
+    FOREIGN KEY(EstudanteMatricula) 
+      REFERENCES Estudante(Matricula));
 
   CREATE TABLE IF NOT EXISTS Estudante (
     Matricula     integer(10) NOT NULL, 
@@ -60,7 +64,8 @@ def build(course_subjects, students_subjects, students_infos):
     FormaIngresso      varchar(255) NOT NULL, 
     Cota               varchar(255) NOT NULL, 
     AnoSemestre        char(6) NOT NULL, 
-    FOREIGN KEY(EstudanteMatricula) REFERENCES Estudante(Matricula));
+    FOREIGN KEY(EstudanteMatricula) 
+      REFERENCES Estudante(Matricula));
 
   CREATE TABLE IF NOT EXISTS NotasEnem (
     EstudanteMatricula integer(10) NOT NULL, 
@@ -70,7 +75,8 @@ def build(course_subjects, students_subjects, students_infos):
     CienNat            char(7) NOT NULL, 
     CienHum            char(7) NOT NULL, 
     Curso              char(7) NOT NULL, 
-    FOREIGN KEY(EstudanteMatricula) REFERENCES Estudante(Matricula));
+    FOREIGN KEY(EstudanteMatricula) 
+      REFERENCES Estudante(Matricula));
   """
 
   insertion_script = {"DisciplinasCursadas":"""
@@ -94,15 +100,7 @@ def build(course_subjects, students_subjects, students_infos):
                       CargaHoraria, 
                       CRE)
                     VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?);
+                      (?, ?, ?, ?, ?, ?, ?, ?, ?);
                       """,
                 "EnsinoMedio":"""
                     INSERT OR IGNORE INTO EnsinoMedio
@@ -111,10 +109,7 @@ def build(course_subjects, students_subjects, students_infos):
                       Cidade, 
                       AnoConclusao) 
                     VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?);
+                      (?, ?, ?, ?);
                     """,
                 "Ingresso":"""
                     INSERT OR IGNORE INTO Ingresso
@@ -123,10 +118,7 @@ def build(course_subjects, students_subjects, students_infos):
                       Cota, 
                       AnoSemestre) 
                     VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?);
+                      (?, ?, ?, ?);
                     """,
                 "NotasEnem":"""
                     INSERT OR IGNORE INTO NotasEnem
@@ -138,19 +130,14 @@ def build(course_subjects, students_subjects, students_infos):
                       CienHum, 
                       Curso) 
                     VALUES 
-                      (?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?, 
-                      ?);
+                      (?, ?, ?, ?, ?, ?, ?);
                     """             
                       }
 
   create_tables(con, cur, tables_creation_script)
   insert_student_data(con, cur, students_subjects, students_infos, insertion_script)
   insert_subjects_data(con,cur, course_subjects)
+  
 def create_tables(con, cur, tables_creation_script):
   cur.executescript(tables_creation_script)
   con.commit()
