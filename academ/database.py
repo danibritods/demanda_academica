@@ -18,6 +18,15 @@ def build(course_subjects, students_subjects, students_infos):
     PRIMARY KEY (Sigla), 
     FOREIGN KEY(Prerequisitos) REFERENCES Disciplinas(Sigla));
 
+  CREATE TABLE IF NOT EXISTS Pre_requisitos (
+    Pre_requisitante INTEGER,
+    Pre_requisito INTEGER,
+    FOREIGN KEY (Pre_requisitante) 
+        REFERENCES disciplinas(Sigla),
+    FOREIGN KEY (Pre_requisito) 
+        REFERENCES disciplinas(Sigla)
+  );
+
   CREATE TABLE IF NOT EXISTS DisciplinasCursadas (
     EstudanteMatricula integer(10) NOT NULL, 
     DisciplinasSigla   varchar(10) NOT NULL, 
@@ -158,8 +167,8 @@ def build(course_subjects, students_subjects, students_infos):
                       }
 
   create_tables(con, cur, tables_creation_script)
-  insert_student_data(con, cur, course_subjects, students_subjects, students_infos, insertion_script)
-
+  insert_student_data(con, cur, students_subjects, students_infos, insertion_script)
+  insert_subjects_data(con,cur, course_subjects)
 def create_tables(con, cur, tables_creation_script):
   cur.executescript(tables_creation_script)
   con.commit()
@@ -185,7 +194,30 @@ def student_data_to_db(con, cur, taken_subjects, student_info, insertion_script)
     insert_db(con, cur, insertion_script["NotasEnem"],
       format_notas_enem(student_info))
 
-def insert_subjects_data(con, cur, course)
+def insert_subjects_data(con, cur, course_subjects):
+  for sigla, v in course_subjects.items():
+    name = v["name"]
+    prerequisites = v["prerequisites"]
+    subject_tuple = (sigla,name)
+    insert_subject_tuple(con,cur, subject_tuple)
+    insert_subject_prerequisites(con,cur, sigla,prerequisites,)
+
+def insert_subject_tuple(con: sqlite3.Connection, cur: sqlite3.Cursor, subject_tuple: tuple[str,str]) -> None:
+    insert_subjects_script = """
+    INSERT OR IGNORE INTO disciplinas
+    (Sigla, Nome)
+    VALUES (?,?);
+    """
+    insert_db(con,cur, insert_subjects_script, [subject_tuple])
+
+def insert_subject_prerequisites(con: sqlite3.Connection, cur: sqlite3.Cursor, subject_id: int, subject_prerequisites: list[int]) -> None:
+   insert_prerequisites_script = """
+   INSERT OR IGNORE INTO Pre_requisitos 
+   (Pre_requisitante, Pre_requisito)
+   VALUES (?,?);
+   """
+   data = [(subject_id,subject_prerequisite) for subject_prerequisite in subject_prerequisites]
+   insert_db(con,cur, insert_prerequisites_script, data)
 
 def insert_db(con, cur,  insertion_script, data):
   cur.executemany(insertion_script,data)
